@@ -23,6 +23,10 @@
             <form action="Controleur?action=supprimerOeuvre" method="post">
                 <button type="submit" name="id" value=${uneOeuvre.idOeuvrevente}>DELETE</button>
             </form>
+            <form action="Controleur?action=modifierOeuvre" method="post">
+                <button type="submit" name="id" value=${uneOeuvre.idOeuvrevente}>MODIF</button>
+            </form>
+
 
         </div>
         <%@ include file="include/footer.jsp"%>

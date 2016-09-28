@@ -14,6 +14,9 @@
 						<div class="element">
 							<a href="Controleur?action=chercherListeOeuvre">Recherche</a>
 						</div>
+						<div class="element">
+							<a href="Controleur?action=ajouterOeuvre">Ajout Oeuvre</a>
+						</div>
 						<div class="element">&nbsp;</div>
 					</div>
 				</div>

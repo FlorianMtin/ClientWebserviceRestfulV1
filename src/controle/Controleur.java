@@ -31,6 +31,10 @@ public class Controleur extends HttpServlet {
 	private static final String RECHERCHER_LISTE_OEUVRE = "chercherListeOeuvre";
 	private static final String RECHERCHER_OEUVRE = "rechercherOeuvre";
 	private static final String SUPPRIMER_OEUVRE ="supprimerOeuvre";
+	private static final String MODIFIER_OEUVRE ="modifierOeuvre";
+	private static final String MODIFICATION_OEUVRE="modificationOeuvre";
+	private static final String INSERER_OEUVRE = "insererOeuvre";
+	private static final String AJOUTER_OEUVRE = "ajouterOeuvre";
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -155,7 +159,64 @@ public class Controleur extends HttpServlet {
 				destinationPage = "/erreur.jsp";
 			}
 			destinationPage = "/index.jsp";
+
+		} else if(MODIFIER_OEUVRE.equals(actionName)){
+			try{
+				Gson gson = new Gson();
+				int idoeuvre = gson.fromJson(request.getParameter("id"), Integer.class);
+				String ressource = "/Oeuvres/" + idoeuvre;
+				Appel unAppel = new Appel();
+				reponse = unAppel.appelJson(ressource);
+				Oeuvrevente json = gson.fromJson(reponse, Oeuvrevente.class);
+				request.setAttribute("uneOeuvre", json);
+
+			} catch (Exception e) {
+
+			destinationPage = "/erreur.jsp";
+			request.setAttribute("MesErreurs", e.getMessage());
 		}
+			destinationPage = "/modifierOeuvre.jsp";
+		} else if(MODIFICATION_OEUVRE.equals(actionName)){
+
+			try {
+				Oeuvrevente uneOeuvre = new Oeuvrevente();
+				uneOeuvre.setTitreOeuvrevente(request.getParameter("txttitre"));
+				uneOeuvre.setEtatOeuvrevente(request.getParameter("txtetat"));
+				uneOeuvre.setIdOeuvrevente(Integer.parseInt(request.getParameter("id")));
+				uneOeuvre.setPrixOeuvrevente(Float.parseFloat(request.getParameter("txtprix")));
+				String ressource = "/Oeuvres/Modifier/" + uneOeuvre;
+				Appel unAppel = new Appel();
+				reponse = unAppel.putJson(ressource, uneOeuvre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				request.setAttribute("MesErreurs", e.getMessage());
+				destinationPage = "/erreur.jsp";
+			}
+			destinationPage = "/index.jsp";
+		}
+		//TODO : ajouter Propriétaire
+		else if (INSERER_OEUVRE.equals(actionName)) {
+			try {
+				Oeuvrevente uneOeuvre = new Oeuvrevente();
+				System.out.println(request.getParameter("txttitre"));
+				uneOeuvre.setTitreOeuvrevente(request.getParameter("txttitre"));
+				uneOeuvre.setEtatOeuvrevente(request.getParameter("txtetat"));
+				uneOeuvre.setPrixOeuvrevente(Float.parseFloat(request.getParameter("txtprix")));
+				String ressource = "/Oeuvres/ajout/" + uneOeuvre;
+				Appel unAppel = new Appel();
+				reponse = unAppel.postJson(ressource, uneOeuvre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				request.setAttribute("MesErreurs", e.getMessage());
+				destinationPage = "/erreur.jsp";
+			}
+			destinationPage = "/index.jsp";
+		} else if (AJOUTER_OEUVRE.equals(actionName)) {
+
+			destinationPage = "/ajouterOeuvre.jsp";
+		}
+
+
 
 
 
